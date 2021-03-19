@@ -1,20 +1,30 @@
 import java.io.* ;
 import java.net.* ;
 import java.util.* ;
+import java.util.concurrent.Semaphore;
 
 final class HttpRequest implements Runnable {
     private final static String CRLF = "\r\n";
     private final static String NotFoundHTMLCode =
             "<HTML><HEAD><TITLE> Not Found </TITLE></HEAD><BODY> Not Found </BODY></HTML>";
-    private Socket socket;
+    private final Socket socket;
+    private final Semaphore semaphore;
 
-    public HttpRequest(Socket socket){
+    public HttpRequest(Socket socket, Semaphore semaphore){
         this.socket = socket;
+        this.semaphore = semaphore;
     }
 
     public void run() {
         try {
-            processRequest();
+            semaphore.acquire();
+            try {
+                processRequest();
+            }
+            catch (Exception e){
+                System.out.println(e);
+            }
+            semaphore.release();
         } catch (Exception e) {
             System.out.println(e);
         }
@@ -61,5 +71,8 @@ final class HttpRequest implements Runnable {
         os.close();
         br.close();
         socket.close();
+
+        //just for testing correct multi-thread work
+        Thread.sleep(5000);
     }
 }
