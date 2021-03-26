@@ -15,7 +15,7 @@ public final class UDP_Server {
 
         while (true) {
             try {
-                //Получаем вообщение от клиента
+                //Получаем сообщение от клиента
                 DatagramPacket inputPacket = new DatagramPacket(receiveBuffer, receiveBuffer.length);
                 serverSocket.receive(inputPacket);
                 String receivedData = new String(inputPacket.getData());
