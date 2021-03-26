@@ -16,11 +16,14 @@ public class AliveChecker implements Runnable {
                 Set<String> clients = lastMessage.keySet();
                 for (String client : clients) {
                     if (new Date().getTime() - lastMessage.get(client) > aliveTimeout) {
+                        // Если последнее сообщение от клиента пришло слишком давно, то удаляем его из списка.
                         lastMessage.remove(client);
                         System.out.println("Client " + client + " seems disconnected.");
                     }
                 }
             }
+
+            // Ненадолго освобождаем lastMessage для другого потока.
             try {
                 Thread.sleep(delay);
             }
