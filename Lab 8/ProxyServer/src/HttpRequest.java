@@ -17,6 +17,7 @@ public class HttpRequest {
             method = args[0];
             URI = args[1];
             version = args[2];
+            System.out.println("URI: " + URI);
 
             args = URI.split("/");
             URI = "";

@@ -43,7 +43,6 @@ public class HttpResponse {
 
             if (status < 400) { //if status - not failed, then reading body.
                 if (contentLength == -1) {
-                    System.out.println("Content length unknown");
                     char[] buffer = new char[BUF_SIZE];
 
                     int shift = 0;
@@ -57,14 +56,13 @@ public class HttpResponse {
                     }
                     contentLength = shift;
                 } else {
-                    System.out.println("Content length: " + contentLength);
                     if (contentLength > MAX_SIZE) {
                         System.out.println("Response body is too large");
                         return;
                     }
                     source.read(body, 0, contentLength);
                 }
-                System.out.println("Body received");
+                System.out.println("Body received, content length: " + contentLength);
             }
             else{  // if status - failed, returning sample web page
                 String failed = "<html><body>Status " + status + "</body></html>";
