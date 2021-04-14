@@ -17,7 +17,9 @@ public class HttpResponse {
     public BufferedImage Image;
 
     public HttpResponse(InputStream stream, String fileExtension){
+        //Checking if file extension corresponds to an image.
         is_image = ProxyServer.isImage(fileExtension);
+
         DataInputStream source = new DataInputStream(stream);
         try {
             String line = source.readLine();

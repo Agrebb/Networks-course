@@ -81,11 +81,14 @@ public class ProxyServer {
         }
 
         int hash = request.toString().hashCode();
+        //Cache file name uses hash of request.
         String fileName = "cached/cached_" + hash + '.' + request.fileExtension;
         File cache = new File(fileName);
 
+        //If this file exists, send it to client.
         if (cache.exists() && cache.isFile()){
             System.out.println("Cached file found: " + fileName);
+            //If it is image then send as image.
             if (ProxyServer.isImage(request.fileExtension)){
                 try {
                     BufferedImage cachedImage = ImageIO.read(cache);
@@ -97,6 +100,7 @@ public class ProxyServer {
                     System.out.println("Error reading cached image: " + e);
                 }
             }
+            //If it's not image send line by line.
             else{
                 try {
                     BufferedReader cachedFileReader = new BufferedReader(new InputStreamReader(new FileInputStream(cache)));
@@ -113,6 +117,7 @@ public class ProxyServer {
                 }
             }
         }
+        //If file doesn't exists, create it, send request to server and save the response.
         else {
             System.out.println("Cached file not found, creating one");
             try {

@@ -19,6 +19,7 @@ public class HttpRequest {
             version = args[2];
             System.out.println("URI: " + URI);
 
+            //Parsing URI to get host and port.
             args = URI.split("/");
             URI = "";
             for (int i = 2; i < args.length; i++) URI += "/" + args[i];
